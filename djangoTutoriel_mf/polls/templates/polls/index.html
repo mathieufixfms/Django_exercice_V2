@@ -1,0 +1,36 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}Accueil des sondages{% endblock %}
+
+{% block main %}
+    <h2>Questionnaire : </h2>
+    {% if questions %}
+        {% for question in questions %}
+            <section>
+                <h3>{{ question.question_text }}</h3>
+                <p>Publié le {{ question.pub_date|date:"d/m/Y à H:i" }}</p>
+                {% if question.choice_set.all %}
+                    <form method="post" action="{% url 'polls:vote' question.id %}">
+                        {% csrf_token %}
+                        {% for choice in question.choice_set.all %}
+                            <label>
+                                <input type="radio" name="choice" value="{{ choice.id }}" required>
+                                {{ choice.choice_text }}
+                            </label><br>
+                        {% empty %}
+                            <p>Aucun choix n'est encore proposé.</p>
+                        {% endfor %}
+                        <button type="submit">Voter</button>
+                    </form>
+                {% else %}
+                    <p>Aucun choix n'est encore proposé.</p>
+                {% endif %}
+                <p><a href="{% url 'polls:frequency' question.id %}">Voir les résultats</a></p>
+            </section>
+        {% endfor %}
+    {% else %}
+        <p>Aucun sondage n'est disponible.</p>
+    {% endif %}
+{% endblock %}

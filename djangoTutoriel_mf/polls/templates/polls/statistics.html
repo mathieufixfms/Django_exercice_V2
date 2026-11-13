@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Statistiques des sondages{% endblock %}
+
+{% block main %}
+    <h2>Statistiques</h2>
+    <dl>
+        <dt>Nombre de sondages</dt>
+        <dd>{{ total_questions }}</dd>
+        <dt>Nombre de choix possibles</dt>
+        <dd>{{ total_choices }}</dd>
+        <dt>Nombre total de votes</dt>
+        <dd>{{ total_votes }}</dd>
+        <dt>Nombre moyen de votes par sondage</dt>
+        <dd>{{ average_votes_per_question|floatformat:2 }}</dd>
+        <dt>Sondage le plus populaire</dt>
+        <dd>{% if most_popular_question %}{{ most_popular_question.question_text }}{% else %}Aucun{% endif %}</dd>
+        <dt>Sondage le moins populaire</dt>
+        <dd>{% if least_popular_question %}{{ least_popular_question.question_text }}{% else %}Aucun{% endif %}</dd>
+        <dt>Dernier sondage enregistré</dt>
+        <dd>{% if last_question %}{{ last_question.question_text }}{% else %}Aucun{% endif %}</dd>
+    </dl>
+{% endblock %}

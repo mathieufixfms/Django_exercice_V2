@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Résultats du sondage{% endblock %}
+
+{% block main %}
+    <h2>Résultats : {{ question.question_text }}</h2>
+    {% if choices %}
+        <ul>
+            {% for choice_text, vote_count, proportion in choices %}
+                <li>
+                    {{ choice_text }} — {{ vote_count }} vote{{ vote_count|pluralize }}
+                    ({{ proportion|floatformat:1 }} %)
+                </li>
+            {% endfor %}
+        </ul>
+        {% if max_choice %}
+            <p>
+                Choix le plus populaire : {{ max_choice.0 }}
+                ({{ max_choice.1 }} vote{{ max_choice.1|pluralize }},
+                {{ max_choice.2|floatformat:1 }} %)
+            </p>
+        {% endif %}
+    {% else %}
+        <p>Aucun choix n'est associé à ce sondage.</p>
+    {% endif %}
+    <p><a href="{% url 'polls:all' %}">Retour à tous les sondages</a></p>
+{% endblock %}

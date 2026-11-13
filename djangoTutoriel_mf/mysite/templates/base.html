@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Sondages{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <header>
+        {% block header %}
+            <h1><a href="{% url 'polls:index' %}">Sondages</a></h1>
+        {% endblock %}
+        <nav aria-label="Navigation principale">
+            <a href="{% url 'polls:index' %}">Accueil</a>
+            <a href="{% url 'polls:all' %}">Tous les sondages</a>
+            <a href="{% url 'polls:statistics' %}">Statistiques</a>
+            {% if user.is_authenticated %}
+                <span>Connecté : {{ user.username }}</span>
+                <form method="post" action="{% url 'polls:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Déconnexion</button>
+                </form>
+                <a href="{% url 'polls:add' %}">Ajouter un sondage</a>
+            {% else %}
+                <a href="{% url 'polls:login' %}">Connexion</a>
+            {% endif %}
+        </nav>
+    </header>
+    <main>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% block main %}{% endblock %}
+    </main>
+</body>
+</html>
